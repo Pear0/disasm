@@ -1,1 +1,3 @@
-flask_session/*
+
+/dist
+/dist_pages

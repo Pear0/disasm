@@ -1,6 +1,0 @@
-capstone
-flask
-flask-socketio
-flask-session
-gevent
-uwsgi
