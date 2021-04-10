@@ -1,3 +1,21 @@
+
+function get_current_capstone() {
+    get_current_capstone.cache = get_current_capstone.cache || {};
+
+    if (typeof Proxy === 'undefined' || Proxy._malloc === undefined)
+        return {ok: false, msg: 'no Proxy'};
+
+    const key = `${global_settings['ARCH']}-${global_settings['MODE']}-${global_settings['ENDIAN']}`;
+
+    if (get_current_capstone.cache[key] === undefined) {
+        get_current_capstone.cache[key] = newCapstone(Proxy, global_settings['ARCH'], global_settings['MODE'], global_settings['ENDIAN']);
+    }
+
+    return get_current_capstone.cache[key];
+}
+
+
+
 function send_machine_update(){
     let machine_code_parsed;
     //Remove all non hex things
@@ -10,10 +28,42 @@ function send_machine_update(){
     }catch (err){
         return
     }
-    global_settings.machine_code_bytes = JSON.stringify(machine_code_parsed);
 
-    socket.emit('disassemble', {'code':machine_code_parsed})
+    if (typeof Proxy === 'undefined')
+        return;
 
+    let capstone = get_current_capstone();
+    if (!capstone.ok) {
+        console.log('capstone:', capstone);
+        return;
+    }
+
+    let startAddress = +global_settings['OFFSET'];
+
+    let asmResult = '';
+
+    for (let line of machine_code_parsed) {
+        if (line.length === 0) {
+            asmResult += '\n';
+            continue;
+        }
+
+        let result = doDisassemble(Proxy, capstone.pCs, line, startAddress);
+
+        if (result.ok) {
+
+            for (let insn of result.instructions) {
+                asmResult += `${insn.mnemonic} ${insn.operands}\n`;
+                startAddress += insn.size;
+            }
+
+        } else {
+            asmResult += result.msg + '\n';
+            break;
+        }
+    }
+
+    update_disassembled_code(asmResult);
 }
 
 function update_disassembled_code(code){

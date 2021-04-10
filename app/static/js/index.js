@@ -8,15 +8,15 @@ let socket, asm_editor, machine_editor;
 let mutex_lock = false;
     
 document.body.onload = ()=> {
-    socket = io.connect('http://' + document.domain + ':' + location.port); // SocketIO's socket
-
-    socket.on('assembled', update_assembled_code)
-
-    socket.on('disassembled', update_disassembled_code)
-
-    socket.on('get_settings', update_settings_to_server)
-
-    socket.on('error', set_error_message); 
+    // socket = io.connect('http://' + document.domain + ':' + location.port); // SocketIO's socket
+    //
+    // socket.on('assembled', update_assembled_code)
+    //
+    // socket.on('disassembled', update_disassembled_code)
+    //
+    // socket.on('get_settings', update_settings_to_server)
+    //
+    // socket.on('error', set_error_message);
 
     init_settings()
 
@@ -118,7 +118,7 @@ function update_settings_to_server(){
         current_settings[key] = global_settings[key]
     }
 
-    socket.emit('update_settings', current_settings)
+    // socket.emit('update_settings', current_settings)
     //Only for when the assembler is available
     if(global_settings.last_focus == 0)
         send_asm_update()

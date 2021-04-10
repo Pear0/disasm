@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>disasm.pro | Online Assembler and Disassembler</title>
+	<link rel="stylesheet" href="static/css/libs/w3.css">
+	<link rel="stylesheet" href="static/css/dark.css">
+    <link rel="stylesheet" href="static/css/beanstalk.css">
+	<link rel="stylesheet" href="static/css/index.css">
+
+    <script defer src="static/js/libs/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script defer src="static/js/libs/easydropdown/easydropdown.js"></script>
+
+    <script defer src="capstone_constants.js"></script>
+    <script defer src="keystone_constants.js"></script>
+    <script defer src="disasm_proxy.js"></script>
+    <script defer src="wrapper.js"></script>
+
+    <script defer src="static/js/constants.js"></script>
+    <script defer src="static/js/index.js"></script>
+    <script defer src="static/js/assemble.js"></script>
+    <script defer src="static/js/disassemble.js"></script>
+
+</head>
+<body>
+	<div>
+            <div class="headercontainer">
+                <div class="">
+                    <select id="ARCH">
+                        <option value="ARCH_X86">Arch: x86</option>
+                        <option value="ARCH_ARM">Arch: ARM</option>
+                        <option value="ARCH_ARM64">Arch: ARM64</option>
+                        <option value="ARCH_MIPS">Arch: MIPS</option>
+                        <option value="ARCH_PPC">Arch: PowerPC</option>
+                        <option value="ARCH_SPARC">Arch: Sparc</option>
+                    </select>
+                </div>
+                <div class="custom-mode" style="">
+                    <select id="MODE">
+                    </select>
+                </div>
+                <div class="">
+                    <select id="ENDIAN">
+                    </select>
+                </div>
+                <div class="">
+                    <div style="width:220px;height:50px">
+                        <label for="OFFSET" style="color:white;font-size: 17px;font-family: 'Open Sans', arial, helvetica, sans-serif;text-shadow: 1px 1px 1px #1b7579;padding-right:3%">Base: </label>
+                        <input id="OFFSET" value="0x0" style="width:70%;height: 90%;box-sizing: border-box;padding-right:10px;padding-left:10px" class="edd-head edd-root simple-style-inputs w3-select" />
+                    </div>
+                </div>
+                <div class="">
+                    <select id="VIEW" class="simple-style-inputs w3-select">
+                        <option value="1">Prettified</option>
+                        <option value="2">Raw String</option>
+                    </select>
+                </div>
+        </div>
+
+		<div>
+			<div class="w3-row-padding">
+                <div class="w3-col" style="width:50%">
+                    <div id="asm_editor" class="editor w3-card"></div>
+                </div>
+                <div class="w3-col" style="width:50%;">
+                    <div id="machine_editor" class="editor w3-card"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="bottomcontainer">
+            <div id="filler" style="min-width: 20%">
+            </div>
+            <div id="msg-box" class="w3-code errorbox">
+                Initializing...
+            </div>
+        </div>
+
+
+        <!-- Footer -->
+    </div>
+
+</body>
+</html>
